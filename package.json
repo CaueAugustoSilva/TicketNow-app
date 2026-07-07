@@ -1,0 +1,26 @@
+{
+  "name": "ticketMaster-app",
+  "version": "1.0.0",
+  "description": "Site acadêmico inspirado em venda de ingressos para eventos, usando ExpressJS, EJS, CSS externo e localStorage.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "keywords": [
+    "express",
+    "ejs",
+    "ticket",
+    "eventos",
+    "localstorage"
+  ],
+  "author": "Projeto acadêmico",
+  "license": "MIT"
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="topo">
+    <nav class="navbar" aria-label="Menu principal">
+      <a class="logo" href="/">Ticket<span>Now</span></a>
+      <button class="menu-botao" id="menuBotao" type="button" aria-label="Abrir menu">☰</button>
+      <ul class="menu" id="menu">
+        <li><a class="<%= paginaAtual === 'index' ? 'ativo' : '' %>" href="/">Início</a></li>
+        <li><a class="<%= paginaAtual === 'eventos' ? 'ativo' : '' %>" href="/eventos">Eventos</a></li>
+        <li><a class="<%= paginaAtual === 'ingressos' ? 'ativo' : '' %>" href="/ingressos">Ingressos</a></li>
+        <li><a class="<%= paginaAtual === 'admin' ? 'ativo' : '' %>" href="/admin">Admin</a></li>
+        <li><a class="<%= paginaAtual === 'sobre' ? 'ativo' : '' %>" href="/sobre">Sobre</a></li>
+        <li><a class="<%= paginaAtual === 'contato' ? 'ativo' : '' %>" href="/contato">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>

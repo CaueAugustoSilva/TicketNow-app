@@ -1,0 +1,9 @@
+<svg width="500" height="320" viewBox="0 0 500 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="320" fill="#12193E"/>
+  <circle cx="415" cy="70" r="54" fill="#F04B91"/>
+  <path d="M70 260L250 100L430 260H70Z" fill="#682BD7"/>
+  <rect x="150" y="170" width="200" height="90" rx="12" fill="#FFFFFF"/>
+  <rect x="177" y="192" width="146" height="13" rx="6.5" fill="#173B8F"/>
+  <rect x="190" y="223" width="120" height="13" rx="6.5" fill="#F04B91"/>
+  <text x="149" y="298" fill="white" font-family="Arial" font-size="24" font-weight="800">Festival Aurora</text>
+</svg>

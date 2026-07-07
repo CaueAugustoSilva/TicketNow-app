@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-conteudo">
+    <p class="etiqueta">Ingressos online</p>
+    <h1><%= subtitulo %></h1>
+    <p>Compre ingressos de forma simples, veja setores, acompanhe o carrinho e gerencie eventos no painel administrativo.</p>
+    <div class="hero-acoes">
+      <a class="botao botao-principal" href="/eventos">Ver eventos</a>
+      <a class="botao botao-secundario" href="/admin">Gerenciar eventos</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <img src="/img/banner-ticket.svg" alt="Ilustração de ingresso digital">
+  </div>
+</section>
+
+<section class="secao">
+  <div class="secao-titulo">
+    <p class="etiqueta">Destaques</p>
+    <h2>Eventos mais procurados</h2>
+  </div>
+
+  <% if (eventosDestaque.length > 0) { %>
+    <div class="grid-cards">
+      <% eventosDestaque.forEach(evento => { %>
+        <article class="card-evento">
+          <img src="<%= evento.imagem %>" alt="Imagem do evento <%= evento.nome %>">
+          <div class="card-corpo">
+            <% if (evento.destaque) { %>
+              <span class="selo">Em alta</span>
+            <% } else { %>
+              <span class="selo selo-neutro">Novo</span>
+            <% } %>
+            <h3><%= evento.nome %></h3>
+            <p><%= evento.categoria %> • <%= evento.cidade %></p>
+            <p class="preco">A partir de R$ <%= evento.preco.toFixed(2).replace('.', ',') %></p>
+            <a class="link-card" href="/ingressos">Comprar ingresso</a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="mensagem-vazia">Nenhum evento cadastrado no momento.</p>
+  <% } %>
+</section>
+
+<section class="secao secao-dupla">
+  <div>
+    <p class="etiqueta">Como funciona</p>
+    <h2>Uma plataforma simples para venda de ingressos</h2>
+    <p>O site simula um sistema de venda de ingressos. O visitante visualiza eventos, escolhe setores, consulta valores e envia uma solicitação de contato.</p>
+  </div>
+  <div class="lista-beneficios">
+    <div><strong>1.</strong> Escolha o evento</div>
+    <div><strong>2.</strong> Compare setores</div>
+    <div><strong>3.</strong> Adicione ao carrinho</div>
+    <div><strong>4.</strong> Finalize a compra simulada</div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+
+<section class="pagina-cabecalho">
+  <p class="etiqueta">LocalStorage + JSON</p>
+  <h1><%= titulo %></h1>
+  <p>Cadastre, edite, remova e filtre eventos. A tabela é renderizada a partir de um JSON salvo no localStorage do navegador.</p>
+</section>
+
+<section class="secao painel-admin">
+  <form id="formEvento" class="formulario admin-form">
+    <input type="hidden" id="eventoId">
+
+    <div>
+      <label for="nomeEvento">Nome do evento</label>
+      <input id="nomeEvento" type="text" placeholder="Ex.: Festival de Verão" required>
+    </div>
+
+    <div>
+      <label for="categoriaEvento">Categoria</label>
+      <select id="categoriaEvento" required>
+        <option value="Música">Música</option>
+        <option value="Show">Show</option>
+        <option value="Comédia">Comédia</option>
+        <option value="Teatro">Teatro</option>
+        <option value="Tecnologia">Tecnologia</option>
+        <option value="Esporte">Esporte</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="cidadeEvento">Cidade</label>
+      <input id="cidadeEvento" type="text" placeholder="Ex.: Rio de Janeiro" required>
+    </div>
+
+    <div>
+      <label for="dataEvento">Data</label>
+      <input id="dataEvento" type="date" required>
+    </div>
+
+    <div>
+      <label for="precoEvento">Preço inicial</label>
+      <input id="precoEvento" type="number" min="0" step="0.01" placeholder="Ex.: 120" required>
+    </div>
+
+    <div>
+      <label for="statusEvento">Status</label>
+      <select id="statusEvento" required>
+        <option value="Disponível">Disponível</option>
+        <option value="Últimos ingressos">Últimos ingressos</option>
+        <option value="Esgotado">Esgotado</option>
+      </select>
+    </div>
+
+    <button class="botao botao-principal" type="submit" id="botaoSalvar">Cadastrar evento</button>
+    <button class="botao botao-secundario" type="button" id="botaoCancelar">Cancelar edição</button>
+  </form>
+</section>
+
+<section class="secao tabela-secao">
+  <div class="barra-tabela">
+    <div>
+      <h2>Eventos cadastrados</h2>
+      <p id="contadorEventos">0 evento(s)</p>
+    </div>
+    <div class="busca-area">
+      <label for="buscaEvento">Buscar</label>
+      <input id="buscaEvento" type="search" placeholder="Buscar por nome, categoria ou cidade">
+    </div>
+  </div>
+
+  <div id="alertaTabela" class="alerta oculto"></div>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Cidade</th>
+          <th>Data</th>
+          <th>Preço</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="corpoTabelaEventos"></tbody>
+    </table>
+  </div>
+</section>
+
+<script src="/js/admin.js"></script>
+<%- include('partials/footer') %>

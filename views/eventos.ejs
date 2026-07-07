@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<section class="pagina-cabecalho">
+  <p class="etiqueta">Catálogo</p>
+  <h1><%= titulo %></h1>
+  <p>Filtre eventos por categoria e veja informações básicas antes de comprar.</p>
+</section>
+
+<section class="secao filtros-eventos">
+  <h2>Filtrar por categoria</h2>
+  <div class="grupo-botoes">
+    <a class="botao <%= categoriaSelecionada === 'Todos' ? 'botao-principal' : 'botao-secundario' %>" href="/eventos">Todos</a>
+    <a class="botao <%= categoriaSelecionada === 'Música' ? 'botao-principal' : 'botao-secundario' %>" href="/eventos?categoria=Música">Música</a>
+    <a class="botao <%= categoriaSelecionada === 'Comédia' ? 'botao-principal' : 'botao-secundario' %>" href="/eventos?categoria=Comédia">Comédia</a>
+    <a class="botao <%= categoriaSelecionada === 'Show' ? 'botao-principal' : 'botao-secundario' %>" href="/eventos?categoria=Show">Show</a>
+    <a class="botao <%= categoriaSelecionada === 'Tecnologia' ? 'botao-principal' : 'botao-secundario' %>" href="/eventos?categoria=Tecnologia">Tecnologia</a>
+  </div>
+</section>
+
+<section class="secao">
+  <% if (eventosFiltrados.length > 0) { %>
+    <div class="grid-cards">
+      <% eventosFiltrados.forEach(evento => { %>
+        <article class="card-evento card-horizontal">
+          <img src="<%= evento.imagem %>" alt="Imagem do evento <%= evento.nome %>">
+          <div class="card-corpo">
+            <span class="selo"><%= evento.categoria %></span>
+            <h2><%= evento.nome %></h2>
+            <p><strong>Cidade:</strong> <%= evento.cidade %></p>
+            <p><strong>Data:</strong> <%= new Date(evento.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) %></p>
+            <p class="preco">A partir de R$ <%= evento.preco.toFixed(2).replace('.', ',') %></p>
+            <a class="botao botao-principal" href="/ingressos">Ver ingressos</a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="mensagem-vazia">
+      <h2>Nenhum evento encontrado</h2>
+      <p>Não existem eventos cadastrados para a categoria selecionada.</p>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+<section class="pagina-cabecalho">
+  <p class="etiqueta">Setores</p>
+  <h1><%= titulo %></h1>
+  <p>Confira uma comparação entre setores e simule a compra de ingressos.</p>
+</section>
+
+<section class="secao tabela-secao">
+  <h2>Tabela de setores</h2>
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Setor</th>
+          <th>Benefício</th>
+          <th>Taxa de serviço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% planos.forEach(plano => { %>
+          <tr>
+            <td><%= plano.nome %></td>
+            <td><%= plano.beneficio %></td>
+            <td><%= plano.taxa %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="secao formulario-card">
+  <div>
+    <p class="etiqueta">Simulador</p>
+    <h2>Calcular compra</h2>
+    <p>Escolha um evento, setor e quantidade. O cálculo aparece automaticamente usando JavaScript.</p>
+  </div>
+
+  <form id="formCompra" class="formulario">
+    <label for="eventoCompra">Evento</label>
+    <select id="eventoCompra" required>
+      <% eventosDestaque.forEach(evento => { %>
+        <option value="<%= evento.preco %>"><%= evento.nome %> - R$ <%= evento.preco.toFixed(2).replace('.', ',') %></option>
+      <% }) %>
+    </select>
+
+    <label for="setorCompra">Setor</label>
+    <select id="setorCompra" required>
+      <option value="12">Pista - taxa R$ 12,00</option>
+      <option value="18">Pista Premium - taxa R$ 18,00</option>
+      <option value="30">Camarote - taxa R$ 30,00</option>
+    </select>
+
+    <label for="quantidadeCompra">Quantidade</label>
+    <input id="quantidadeCompra" type="number" min="1" max="10" value="1" required>
+
+    <button class="botao botao-principal" type="submit">Calcular total</button>
+  </form>
+
+  <div id="resultadoCompra" class="resultado-compra">Preencha os dados para calcular.</div>
+</section>
+
+<script src="/js/ingressos.js"></script>
+<%- include('partials/footer') %>

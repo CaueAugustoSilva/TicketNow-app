@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<section class="pagina-cabecalho">
+  <p class="etiqueta">Fale conosco</p>
+  <h1><%= titulo %></h1>
+  <p>Envie uma mensagem simulada para suporte, dúvidas sobre eventos ou parcerias.</p>
+</section>
+
+<section class="secao formulario-card">
+  <div>
+    <h2>Formulário de contato</h2>
+    <p>O formulário abaixo usa JavaScript para validar os campos e exibir uma resposta condicional.</p>
+  </div>
+
+  <form id="formContato" class="formulario">
+    <label for="nomeContato">Nome</label>
+    <input id="nomeContato" type="text" placeholder="Digite seu nome" required>
+
+    <label for="emailContato">E-mail</label>
+    <input id="emailContato" type="email" placeholder="seuemail@exemplo.com" required>
+
+    <label for="assuntoContato">Assunto</label>
+    <select id="assuntoContato" required>
+      <option value="">Selecione</option>
+      <option value="Dúvida sobre evento">Dúvida sobre evento</option>
+      <option value="Problema com ingresso">Problema com ingresso</option>
+      <option value="Parceria">Parceria</option>
+    </select>
+
+    <label for="mensagemContato">Mensagem</label>
+    <textarea id="mensagemContato" rows="5" placeholder="Escreva sua mensagem" required></textarea>
+
+    <button class="botao botao-principal" type="submit">Enviar mensagem</button>
+  </form>
+
+  <div id="respostaContato" class="resultado-compra">A resposta aparecerá aqui.</div>
+</section>
+
+<script src="/js/contato.js"></script>
+<%- include('partials/footer') %>
