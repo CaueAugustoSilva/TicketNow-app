@@ -15,7 +15,7 @@ const eventosPadrao = [
     id: 2,
     nome: "Noite do Stand-up Nacional",
     categoria: "Comédia",
-    cidade: "Rio de Janeiro",
+    cidade: "São Paulo",
     data: "2026-08-20",
     preco: 95,
     status: "Últimos ingressos",
@@ -40,28 +40,7 @@ const eventosPadrao = [
   },
 ];
 
-const ingressosPadrao = [
-  {
-    id: 1,
-    comprador: "Carlos Henrique",
-    email: "carlos@email.com",
-    eventoId: 1,
-    setor: "Pista",
-    taxa: 12,
-    quantidade: 2,
-    status: "Pago",
-  },
-  {
-    id: 2,
-    comprador: "Mariana Lima",
-    email: "mariana@email.com",
-    eventoId: 2,
-    setor: "Camarote",
-    taxa: 30,
-    quantidade: 1,
-    status: "Reservado",
-  },
-];
+const ingressosPadrao = [];
 
 const formEvento = document.querySelector("#formEvento");
 const eventoId = document.querySelector("#eventoId");
@@ -229,6 +208,56 @@ function atualizarSelectEventosDosIngressos() {
   });
 }
 
+function criarModal(titulo, conteudoFormulario) {
+  const modalAntigo = document.querySelector("#modalEdicao");
+
+  if (modalAntigo) {
+    modalAntigo.remove();
+  }
+
+  const modal = document.createElement("div");
+  modal.id = "modalEdicao";
+  modal.className =
+    "fixed inset-0 z-[999] flex items-center justify-center bg-black/70 px-5 py-8 backdrop-blur-sm";
+
+  modal.innerHTML = `
+    <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl md:p-8">
+      <div class="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <p class="section-kicker bg-[#00AEEF]/10 text-[#026CDF]">Edição</p>
+          <h2 class="mt-3 text-3xl font-black tracking-[-0.04em] text-slate-950">${titulo}</h2>
+        </div>
+
+        <button id="fecharModalEdicao" class="rounded-full bg-slate-100 px-4 py-2 text-xl font-black text-slate-950 transition hover:bg-slate-200" type="button">
+          ×
+        </button>
+      </div>
+
+      ${conteudoFormulario}
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const fecharModalEdicao = document.querySelector("#fecharModalEdicao");
+
+  fecharModalEdicao.addEventListener("click", fecharModal);
+
+  modal.addEventListener("click", (event) => {
+    if (event.target.id === "modalEdicao") {
+      fecharModal();
+    }
+  });
+}
+
+function fecharModal() {
+  const modal = document.querySelector("#modalEdicao");
+
+  if (modal) {
+    modal.remove();
+  }
+}
+
 function renderizarTabelaEventos() {
   const termo = buscaEvento.value.toLowerCase().trim();
   const eventos = buscarEventos();
@@ -261,8 +290,8 @@ function renderizarTabelaEventos() {
 
     linha.className =
       indice % 2 === 0
-        ? "bg-white transition hover:bg-pink-50"
-        : "bg-slate-50 transition hover:bg-pink-50";
+        ? "bg-white transition hover:bg-blue-50"
+        : "bg-slate-50 transition hover:bg-blue-50";
 
     linha.innerHTML = `
       <td class="px-5 py-4 font-black text-slate-950">${evento.nome}</td>
@@ -294,10 +323,9 @@ function cadastrarOuAtualizarEvento(event) {
   event.preventDefault();
 
   const eventos = buscarEventos();
-  const idEmEdicao = eventoId.value;
 
   const evento = {
-    id: idEmEdicao ? Number(idEmEdicao) : Date.now(),
+    id: Date.now(),
     nome: nomeEvento.value.trim(),
     categoria: categoriaEvento.value,
     cidade: cidadeEvento.value.trim(),
@@ -314,26 +342,18 @@ function cadastrarOuAtualizarEvento(event) {
     return;
   }
 
-  if (idEmEdicao) {
-    const eventosAtualizados = eventos.map((item) => {
-      return Number(item.id) === Number(idEmEdicao) ? evento : item;
-    });
-
-    salvarEventos(eventosAtualizados);
-    exibirAlerta(alertaEventos, "Evento editado com sucesso!");
-  } else {
-    eventos.push(evento);
-    salvarEventos(eventos);
-    exibirAlerta(alertaEventos, "Evento cadastrado com sucesso!");
-  }
+  eventos.push(evento);
+  salvarEventos(eventos);
 
   limparFormularioEvento();
   atualizarSelectEventosDosIngressos();
   renderizarTabelaEventos();
   renderizarTabelaIngressos();
+
+  exibirAlerta(alertaEventos, "Evento cadastrado com sucesso!");
 }
 
-function editarEvento(id) {
+function abrirModalEditarEvento(id) {
   const evento = buscarEventoPorId(id);
 
   if (!evento) {
@@ -341,20 +361,109 @@ function editarEvento(id) {
     return;
   }
 
-  eventoId.value = evento.id;
-  nomeEvento.value = evento.nome;
-  categoriaEvento.value = evento.categoria;
-  cidadeEvento.value = evento.cidade;
-  dataEvento.value = evento.data;
-  precoEvento.value = evento.preco;
-  statusEvento.value = evento.status;
+  criarModal(
+    "Editar evento",
+    `
+    <form id="formModalEvento" class="grid gap-5">
+      <div>
+        <label class="form-label" for="modalNomeEvento">Nome do evento</label>
+        <input id="modalNomeEvento" class="form-control" type="text" value="${evento.nome}" required>
+      </div>
 
-  botaoSalvarEvento.textContent = "Salvar alterações";
+      <div class="grid gap-5 md:grid-cols-2">
+        <div>
+          <label class="form-label" for="modalCategoriaEvento">Categoria</label>
+          <select id="modalCategoriaEvento" class="form-control" required>
+            <option value="Música">Música</option>
+            <option value="Comédia">Comédia</option>
+            <option value="Show">Show</option>
+            <option value="Tecnologia">Tecnologia</option>
+            <option value="Teatro">Teatro</option>
+            <option value="Esporte">Esporte</option>
+          </select>
+        </div>
 
-  formEvento.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+        <div>
+          <label class="form-label" for="modalCidadeEvento">Cidade</label>
+          <input id="modalCidadeEvento" class="form-control" type="text" value="${evento.cidade}" required>
+        </div>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <div>
+          <label class="form-label" for="modalDataEvento">Data</label>
+          <input id="modalDataEvento" class="form-control" type="date" value="${evento.data}" required>
+        </div>
+
+        <div>
+          <label class="form-label" for="modalPrecoEvento">Preço</label>
+          <input id="modalPrecoEvento" class="form-control" type="number" min="0" step="0.01" value="${evento.preco}" required>
+        </div>
+
+        <div>
+          <label class="form-label" for="modalStatusEvento">Status</label>
+          <select id="modalStatusEvento" class="form-control" required>
+            <option value="Disponível">Disponível</option>
+            <option value="Últimos ingressos">Últimos ingressos</option>
+            <option value="Esgotado">Esgotado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2">
+        <button class="btn-primary" type="submit">Salvar alterações</button>
+        <button class="btn-secondary" id="cancelarModalEvento" type="button">Cancelar</button>
+      </div>
+    </form>
+  `,
+  );
+
+  document.querySelector("#modalCategoriaEvento").value = evento.categoria;
+  document.querySelector("#modalStatusEvento").value = evento.status;
+
+  document
+    .querySelector("#cancelarModalEvento")
+    .addEventListener("click", fecharModal);
+
+  document
+    .querySelector("#formModalEvento")
+    .addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const eventoAtualizado = {
+        id: evento.id,
+        nome: document.querySelector("#modalNomeEvento").value.trim(),
+        categoria: document.querySelector("#modalCategoriaEvento").value,
+        cidade: document.querySelector("#modalCidadeEvento").value.trim(),
+        data: document.querySelector("#modalDataEvento").value,
+        preco: Number(document.querySelector("#modalPrecoEvento").value),
+        status: document.querySelector("#modalStatusEvento").value,
+      };
+
+      if (
+        !eventoAtualizado.nome ||
+        !eventoAtualizado.cidade ||
+        !eventoAtualizado.data ||
+        eventoAtualizado.preco < 0
+      ) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      const eventos = buscarEventos();
+
+      const eventosAtualizados = eventos.map((item) => {
+        return Number(item.id) === Number(id) ? eventoAtualizado : item;
+      });
+
+      salvarEventos(eventosAtualizados);
+      atualizarSelectEventosDosIngressos();
+      renderizarTabelaEventos();
+      renderizarTabelaIngressos();
+      fecharModal();
+
+      exibirAlerta(alertaEventos, "Evento editado com sucesso!");
+    });
 }
 
 function removerEvento(id) {
@@ -430,8 +539,8 @@ function renderizarTabelaIngressos() {
 
     linha.className =
       indice % 2 === 0
-        ? "bg-white transition hover:bg-emerald-50"
-        : "bg-slate-50 transition hover:bg-emerald-50";
+        ? "bg-white transition hover:bg-blue-50"
+        : "bg-slate-50 transition hover:bg-blue-50";
 
     linha.innerHTML = `
       <td class="px-5 py-4 font-black text-slate-950">${ingresso.comprador}</td>
@@ -469,7 +578,6 @@ function cadastrarOuAtualizarIngresso(event) {
   event.preventDefault();
 
   const ingressos = buscarIngressos();
-  const idEmEdicao = ingressoId.value;
 
   if (!eventoIngresso.value) {
     exibirAlerta(
@@ -480,7 +588,7 @@ function cadastrarOuAtualizarIngresso(event) {
   }
 
   const ingresso = {
-    id: idEmEdicao ? Number(idEmEdicao) : Date.now(),
+    id: Date.now(),
     comprador: compradorIngresso.value.trim(),
     email: emailIngresso.value.trim(),
     eventoId: Number(eventoIngresso.value),
@@ -503,24 +611,16 @@ function cadastrarOuAtualizarIngresso(event) {
     return;
   }
 
-  if (idEmEdicao) {
-    const ingressosAtualizados = ingressos.map((item) => {
-      return Number(item.id) === Number(idEmEdicao) ? ingresso : item;
-    });
-
-    salvarIngressos(ingressosAtualizados);
-    exibirAlerta(alertaIngressos, "Ingresso editado com sucesso!");
-  } else {
-    ingressos.push(ingresso);
-    salvarIngressos(ingressos);
-    exibirAlerta(alertaIngressos, "Ingresso registrado com sucesso!");
-  }
+  ingressos.push(ingresso);
+  salvarIngressos(ingressos);
 
   limparFormularioIngresso();
   renderizarTabelaIngressos();
+
+  exibirAlerta(alertaIngressos, "Ingresso registrado com sucesso!");
 }
 
-function editarIngresso(id) {
+function abrirModalEditarIngresso(id) {
   const ingressos = buscarIngressos();
   const ingresso = ingressos.find((item) => Number(item.id) === Number(id));
 
@@ -529,20 +629,120 @@ function editarIngresso(id) {
     return;
   }
 
-  ingressoId.value = ingresso.id;
-  compradorIngresso.value = ingresso.comprador;
-  emailIngresso.value = ingresso.email;
-  eventoIngresso.value = ingresso.eventoId;
-  setorIngresso.value = ingresso.setor;
-  quantidadeIngresso.value = ingresso.quantidade;
-  statusIngresso.value = ingresso.status;
+  const eventos = buscarEventos();
 
-  botaoSalvarIngresso.textContent = "Salvar alterações";
+  const optionsEventos = eventos
+    .map((evento) => {
+      return `<option value="${evento.id}">${evento.nome} - ${formatarMoeda(evento.preco)}</option>`;
+    })
+    .join("");
 
-  formIngresso.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+  criarModal(
+    "Editar ingresso",
+    `
+    <form id="formModalIngresso" class="grid gap-5">
+      <div class="grid gap-5 md:grid-cols-2">
+        <div>
+          <label class="form-label" for="modalCompradorIngresso">Comprador</label>
+          <input id="modalCompradorIngresso" class="form-control" type="text" value="${ingresso.comprador}" required>
+        </div>
+
+        <div>
+          <label class="form-label" for="modalEmailIngresso">E-mail</label>
+          <input id="modalEmailIngresso" class="form-control" type="email" value="${ingresso.email}" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="form-label" for="modalEventoIngresso">Evento</label>
+        <select id="modalEventoIngresso" class="form-control" required>
+          ${optionsEventos}
+        </select>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <div>
+          <label class="form-label" for="modalSetorIngresso">Setor</label>
+          <select id="modalSetorIngresso" class="form-control" required>
+            <option value="Pista" data-taxa="12">Pista - taxa R$ 12,00</option>
+            <option value="Pista Premium" data-taxa="18">Pista Premium - taxa R$ 18,00</option>
+            <option value="Camarote" data-taxa="30">Camarote - taxa R$ 30,00</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="modalQuantidadeIngresso">Quantidade</label>
+          <input id="modalQuantidadeIngresso" class="form-control" type="number" min="1" value="${ingresso.quantidade}" required>
+        </div>
+
+        <div>
+          <label class="form-label" for="modalStatusIngresso">Status</label>
+          <select id="modalStatusIngresso" class="form-control" required>
+            <option value="Reservado">Reservado</option>
+            <option value="Pago">Pago</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2">
+        <button class="btn-primary" type="submit">Salvar alterações</button>
+        <button class="btn-secondary" id="cancelarModalIngresso" type="button">Cancelar</button>
+      </div>
+    </form>
+  `,
+  );
+
+  document.querySelector("#modalEventoIngresso").value = ingresso.eventoId;
+  document.querySelector("#modalSetorIngresso").value = ingresso.setor;
+  document.querySelector("#modalStatusIngresso").value = ingresso.status;
+
+  document
+    .querySelector("#cancelarModalIngresso")
+    .addEventListener("click", fecharModal);
+
+  document
+    .querySelector("#formModalIngresso")
+    .addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const modalSetor = document.querySelector("#modalSetorIngresso");
+      const optionSelecionada = modalSetor.options[modalSetor.selectedIndex];
+
+      const ingressoAtualizado = {
+        id: ingresso.id,
+        comprador: document
+          .querySelector("#modalCompradorIngresso")
+          .value.trim(),
+        email: document.querySelector("#modalEmailIngresso").value.trim(),
+        eventoId: Number(document.querySelector("#modalEventoIngresso").value),
+        setor: modalSetor.value,
+        taxa: Number(optionSelecionada.dataset.taxa),
+        quantidade: Number(
+          document.querySelector("#modalQuantidadeIngresso").value,
+        ),
+        status: document.querySelector("#modalStatusIngresso").value,
+      };
+
+      if (
+        !ingressoAtualizado.comprador ||
+        !ingressoAtualizado.email ||
+        ingressoAtualizado.quantidade <= 0
+      ) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      const ingressosAtualizados = buscarIngressos().map((item) => {
+        return Number(item.id) === Number(id) ? ingressoAtualizado : item;
+      });
+
+      salvarIngressos(ingressosAtualizados);
+      renderizarTabelaIngressos();
+      fecharModal();
+
+      exibirAlerta(alertaIngressos, "Ingresso editado com sucesso!");
+    });
 }
 
 function removerIngresso(id) {
@@ -583,7 +783,7 @@ function configurarEventosDaPagina() {
     const id = Number(botao.dataset.id);
 
     if (botao.dataset.acao === "editar-evento") {
-      editarEvento(id);
+      abrirModalEditarEvento(id);
     }
 
     if (botao.dataset.acao === "remover-evento") {
@@ -601,7 +801,7 @@ function configurarEventosDaPagina() {
     const id = Number(botao.dataset.id);
 
     if (botao.dataset.acao === "editar-ingresso") {
-      editarIngresso(id);
+      abrirModalEditarIngresso(id);
     }
 
     if (botao.dataset.acao === "remover-ingresso") {
