@@ -262,7 +262,11 @@ body {
   border-radius: 2rem;
   background: rgba(255, 255, 255, 0.92);
   padding: 1.5rem;
+<<<<<<< HEAD
   box-shadow: 0 24px 70px rgba(1, 28, 64, 0.1);
+=======
+  box-shadow: 0 10px 70px rgba(15, 23, 42, 0.08);
+>>>>>>> dcf0990aabe3248b9093f8f593c08058f95ea4ea
 }
 
 @media (min-width: 768px) {
