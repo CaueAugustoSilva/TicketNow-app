@@ -15,7 +15,7 @@ const eventosPadrao = [
     id: 2,
     nome: "Noite do Stand-up Nacional",
     categoria: "Comédia",
-    cidade: "Rio de Janeiro",
+    cidade: "São Paulo",
     data: "2026-08-20",
     preco: 95,
     status: "Últimos ingressos",
@@ -48,9 +48,6 @@ const setorCompra = document.querySelector("#setorCompra");
 const quantidadeCompra = document.querySelector("#quantidadeCompra");
 const resumoCompra = document.querySelector("#resumoCompra");
 const alertaCompraIngresso = document.querySelector("#alertaCompraIngresso");
-const buscaCompra = document.querySelector("#buscaCompra");
-const contadorCompras = document.querySelector("#contadorCompras");
-const corpoTabelaCompras = document.querySelector("#corpoTabelaCompras");
 
 function buscarDados(chave, dadosPadrao) {
   const dadosSalvos = localStorage.getItem(chave);
@@ -101,28 +98,6 @@ function buscarTaxaSelecionada() {
   return Number(optionSelecionada.dataset.taxa);
 }
 
-function obterClasseStatusIngresso(status) {
-  if (status === "Pago") {
-    return "status-badge status-disponivel";
-  }
-
-  if (status === "Reservado") {
-    return "status-badge status-ultimos";
-  }
-
-  return "status-badge status-esgotado";
-}
-
-function calcularTotal(eventoId, taxa, quantidade) {
-  const evento = buscarEventoPorId(eventoId);
-
-  if (!evento) {
-    return 0;
-  }
-
-  return (Number(evento.preco) + Number(taxa)) * Number(quantidade);
-}
-
 function atualizarResumoCompra() {
   const eventoId = Number(eventoCompra.value);
   const evento = buscarEventoPorId(eventoId);
@@ -155,8 +130,8 @@ function atualizarResumoCompra() {
       </div>
 
       <div>
-        <span class="block text-xs font-black uppercase tracking-wide text-pink-500">Total</span>
-        <strong class="text-2xl text-pink-600">${formatarMoeda(total)}</strong>
+        <span class="block text-xs font-black uppercase tracking-wide text-[#026CDF]">Total</span>
+        <strong class="text-2xl text-[#026CDF]">${formatarMoeda(total)}</strong>
       </div>
     </div>
   `;
@@ -209,6 +184,15 @@ function registrarIngresso(event) {
   const taxa = buscarTaxaSelecionada();
   const quantidade = Number(quantidadeCompra.value);
 
+  if (
+    !compradorCompra.value.trim() ||
+    !emailCompra.value.trim() ||
+    quantidade <= 0
+  ) {
+    exibirAlerta("Preencha todos os campos corretamente.");
+    return;
+  }
+
   const novoIngresso = {
     id: Date.now(),
     comprador: compradorCompra.value.trim(),
@@ -220,124 +204,21 @@ function registrarIngresso(event) {
     status: "Reservado",
   };
 
-  if (!novoIngresso.comprador || !novoIngresso.email || quantidade <= 0) {
-    exibirAlerta("Preencha todos os campos corretamente.");
-    return;
-  }
-
   const ingressos = buscarIngressos();
   ingressos.push(novoIngresso);
   salvarIngressos(ingressos);
 
   limparFormularioCompra();
-  renderizarTabelaCompras();
-  exibirAlerta("Ingresso registrado com sucesso!");
-}
-
-function removerIngresso(id) {
-  const confirmar = confirm("Tem certeza que deseja remover este ingresso?");
-
-  if (!confirmar) {
-    return;
-  }
-
-  const ingressos = buscarIngressos();
-  const ingressosAtualizados = ingressos.filter(
-    (ingresso) => Number(ingresso.id) !== Number(id),
-  );
-
-  salvarIngressos(ingressosAtualizados);
-  renderizarTabelaCompras();
-  exibirAlerta("Ingresso removido com sucesso!");
-}
-
-function renderizarTabelaCompras() {
-  const termo = buscaCompra.value.toLowerCase().trim();
-  const ingressos = buscarIngressos();
-
-  const ingressosFiltrados = ingressos.filter((ingresso) => {
-    const evento = buscarEventoPorId(ingresso.eventoId);
-    const nomeEvento = evento ? evento.nome : "Evento removido";
-
-    return (
-      ingresso.comprador.toLowerCase().includes(termo) ||
-      ingresso.email.toLowerCase().includes(termo) ||
-      nomeEvento.toLowerCase().includes(termo) ||
-      ingresso.setor.toLowerCase().includes(termo) ||
-      ingresso.status.toLowerCase().includes(termo)
-    );
-  });
-
-  contadorCompras.textContent = `${ingressosFiltrados.length} ingresso(s)`;
-  corpoTabelaCompras.innerHTML = "";
-
-  if (ingressosFiltrados.length === 0) {
-    corpoTabelaCompras.innerHTML = `
-      <tr>
-        <td colspan="8" class="px-5 py-8 text-center font-bold text-slate-500">
-          Nenhum ingresso registrado.
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  ingressosFiltrados.forEach((ingresso, indice) => {
-    const evento = buscarEventoPorId(ingresso.eventoId);
-    const nomeEvento = evento ? evento.nome : "Evento removido";
-    const total = calcularTotal(
-      ingresso.eventoId,
-      ingresso.taxa,
-      ingresso.quantidade,
-    );
-
-    const linha = document.createElement("tr");
-
-    linha.className =
-      indice % 2 === 0
-        ? "bg-white transition hover:bg-emerald-50"
-        : "bg-slate-50 transition hover:bg-emerald-50";
-
-    linha.innerHTML = `
-      <td class="px-5 py-4 font-black text-slate-950">${ingresso.comprador}</td>
-      <td class="px-5 py-4 text-slate-600">${ingresso.email}</td>
-      <td class="px-5 py-4 font-bold text-slate-700">${nomeEvento}</td>
-      <td class="px-5 py-4 text-slate-600">${ingresso.setor}</td>
-      <td class="px-5 py-4 font-black text-slate-950">${ingresso.quantidade}</td>
-      <td class="px-5 py-4 font-black text-slate-950">${formatarMoeda(total)}</td>
-      <td class="px-5 py-4">
-        <span class="${obterClasseStatusIngresso(ingresso.status)}">${ingresso.status}</span>
-      </td>
-      <td class="px-5 py-4">
-        <button class="botao-pequeno remover" type="button" data-id="${ingresso.id}">
-          Remover
-        </button>
-      </td>
-    `;
-
-    corpoTabelaCompras.appendChild(linha);
-  });
+  exibirAlerta("Ingresso cadastrado com sucesso!");
 }
 
 function iniciarPaginaIngressos() {
   popularSelectEventos();
-  renderizarTabelaCompras();
 
   formCompraIngresso.addEventListener("submit", registrarIngresso);
   eventoCompra.addEventListener("change", atualizarResumoCompra);
   setorCompra.addEventListener("change", atualizarResumoCompra);
   quantidadeCompra.addEventListener("input", atualizarResumoCompra);
-  buscaCompra.addEventListener("input", renderizarTabelaCompras);
-
-  corpoTabelaCompras.addEventListener("click", (event) => {
-    const botao = event.target.closest("button");
-
-    if (!botao) {
-      return;
-    }
-
-    removerIngresso(Number(botao.dataset.id));
-  });
 }
 
 if (formCompraIngresso) {

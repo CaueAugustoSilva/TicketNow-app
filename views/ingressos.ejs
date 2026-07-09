@@ -2,8 +2,10 @@
 
 <section class="page-hero">
   <div class="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-    <p class="section-kicker bg-[#54ACBF]/10 text-[#A7EBF2]">
-      Compra de ingressos
+    <p
+      class="section-kicker border-[#00AEEF]/30 bg-[#00AEEF]/10 text-[#BAE6FD]"
+    >
+      Cadastro de ingressos
     </p>
 
     <h1
@@ -13,170 +15,105 @@
     </h1>
 
     <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-      Registre uma compra simulada de ingresso. Os dados ficam salvos no
-      localStorage e aparecem também no painel Admin.
+      Cadastre uma compra de ingresso. Os registros ficam salvos no localStorage
+      e podem ser visualizados e gerenciados somente no painel administrativo.
     </p>
   </div>
 </section>
 
 <section class="section-shell">
-  <div class="mx-auto max-w-7xl px-5 lg:px-8">
-    <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-      <section class="card-light">
-        <p class="section-kicker bg-pink-100 text-pink-600">Nova compra</p>
+  <div class="mx-auto max-w-5xl px-5 lg:px-8">
+    <section class="card-light">
+      <p class="section-kicker bg-[#00AEEF]/10 text-[#026CDF]">Nova compra</p>
 
-        <h2 class="mt-4 text-4xl font-black tracking-[-0.05em] text-slate-950">
-          Registrar ingresso
-        </h2>
+      <h2 class="mt-4 text-4xl font-black tracking-[-0.05em] text-slate-950">
+        Cadastrar ingresso
+      </h2>
 
-        <p class="mt-3 leading-7 text-slate-600">
-          Preencha os dados abaixo para simular a compra. O valor total é
-          calculado automaticamente.
-        </p>
+      <p class="mt-3 leading-7 text-slate-600">
+        Preencha os dados abaixo para registrar o ingresso. O total será
+        calculado automaticamente.
+      </p>
 
-        <form id="formCompraIngresso" class="mt-8 grid gap-5">
-          <div class="grid gap-5 md:grid-cols-2">
-            <div>
-              <label for="compradorCompra" class="form-label"
-                >Nome do comprador</label
-              >
-              <input
-                id="compradorCompra"
-                class="form-control"
-                type="text"
-                placeholder="Ex: Ana Carolina"
-                required
-              />
-            </div>
-
-            <div>
-              <label for="emailCompra" class="form-label"
-                >E-mail do comprador</label
-              >
-              <input
-                id="emailCompra"
-                class="form-control"
-                type="email"
-                placeholder="comprador@email.com"
-                required
-              />
-            </div>
+      <form id="formCompraIngresso" class="mt-8 grid gap-5">
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label for="compradorCompra" class="form-label"
+              >Nome do comprador</label
+            >
+            <input
+              id="compradorCompra"
+              class="form-control"
+              type="text"
+              placeholder="Ex: Ana Carolina"
+              required
+            />
           </div>
 
           <div>
-            <label for="eventoCompra" class="form-label">Evento</label>
-            <select id="eventoCompra" class="form-control" required></select>
+            <label for="emailCompra" class="form-label"
+              >E-mail do comprador</label
+            >
+            <input
+              id="emailCompra"
+              class="form-control"
+              type="email"
+              placeholder="comprador@email.com"
+              required
+            />
           </div>
+        </div>
 
-          <div class="grid gap-5 md:grid-cols-2">
-            <div>
-              <label for="setorCompra" class="form-label">Setor</label>
-
-              <select id="setorCompra" class="form-control" required>
-                <option value="Pista" data-taxa="12">
-                  Pista - taxa R$ 12,00
-                </option>
-                <option value="Pista Premium" data-taxa="18">
-                  Pista Premium - taxa R$ 18,00
-                </option>
-                <option value="Camarote" data-taxa="30">
-                  Camarote - taxa R$ 30,00
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="quantidadeCompra" class="form-label"
-                >Quantidade</label
-              >
-              <input
-                id="quantidadeCompra"
-                class="form-control"
-                type="number"
-                min="1"
-                value="1"
-                required
-              />
-            </div>
-          </div>
-
-          <div
-            id="resumoCompra"
-            class="rounded-[1.5rem] border border-pink-100 bg-pink-50 p-5"
-          >
-            <p class="font-bold text-slate-600">
-              Selecione os dados para calcular.
-            </p>
-          </div>
-
-          <button class="btn-primary w-full" type="submit">
-            Registrar ingresso
-          </button>
-        </form>
-
-        <div id="alertaCompraIngresso" class="alerta-sistema oculto"></div>
-      </section>
-    </div>
-
-    <section class="card-light mt-10">
-      <div
-        class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
-      >
         <div>
-          <p class="section-kicker bg-emerald-100 text-emerald-600">
-            Registros
-          </p>
+          <label for="eventoCompra" class="form-label">Evento</label>
+          <select id="eventoCompra" class="form-control" required></select>
+        </div>
 
-          <h2
-            class="mt-4 text-4xl font-black tracking-[-0.05em] text-slate-950"
-          >
-            Ingressos registrados
-          </h2>
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label for="setorCompra" class="form-label">Setor</label>
 
-          <p class="mt-2 text-slate-600">
-            Esses dados são salvos no localStorage e podem ser editados no
-            Admin.
-          </p>
+            <select id="setorCompra" class="form-control" required>
+              <option value="Pista" data-taxa="12">
+                Pista - taxa R$ 12,00
+              </option>
+              <option value="Pista Premium" data-taxa="18">
+                Pista Premium - taxa R$ 18,00
+              </option>
+              <option value="Camarote" data-taxa="30">
+                Camarote - taxa R$ 30,00
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="quantidadeCompra" class="form-label">Quantidade</label>
+            <input
+              id="quantidadeCompra"
+              class="form-control"
+              type="number"
+              min="1"
+              value="1"
+              required
+            />
+          </div>
         </div>
 
         <div
-          class="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-black text-slate-700"
+          id="resumoCompra"
+          class="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5"
         >
-          <span id="contadorCompras">0 ingresso(s)</span>
+          <p class="font-bold text-slate-600">
+            Selecione os dados para calcular.
+          </p>
         </div>
-      </div>
 
-      <div class="mt-7">
-        <label for="buscaCompra" class="form-label">Filtrar ingressos</label>
-        <input
-          id="buscaCompra"
-          class="form-control"
-          type="search"
-          placeholder="Busque por comprador, e-mail, evento, setor ou status"
-        />
-      </div>
+        <button class="btn-primary w-full" type="submit">
+          Cadastrar ingresso
+        </button>
+      </form>
 
-      <div class="table-wrap mt-7">
-        <table class="w-full min-w-[1000px] border-collapse text-left">
-          <thead class="bg-slate-950 text-white">
-            <tr>
-              <th class="px-5 py-4">Comprador</th>
-              <th class="px-5 py-4">E-mail</th>
-              <th class="px-5 py-4">Evento</th>
-              <th class="px-5 py-4">Setor</th>
-              <th class="px-5 py-4">Qtd.</th>
-              <th class="px-5 py-4">Total</th>
-              <th class="px-5 py-4">Status</th>
-              <th class="px-5 py-4">Ação</th>
-            </tr>
-          </thead>
-
-          <tbody
-            id="corpoTabelaCompras"
-            class="divide-y divide-slate-100 bg-white"
-          ></tbody>
-        </table>
-      </div>
+      <div id="alertaCompraIngresso" class="alerta-sistema oculto"></div>
     </section>
   </div>
 </section>
