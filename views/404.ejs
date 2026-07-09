@@ -1,10 +1,21 @@
 <%- include('partials/header') %>
 
-<section class="pagina-cabecalho erro-pagina">
-  <p class="etiqueta">Erro 404</p>
-  <h1>Página não encontrada</h1>
-  <p>A rota acessada não existe neste projeto.</p>
-  <a class="botao botao-principal" href="/">Voltar para o início</a>
+<section
+  class="relative bg-slate-950 px-5 py-28 text-center text-white lg:px-8"
+>
+  <div class="mx-auto max-w-3xl">
+    <p class="text-8xl font-black tracking-[-0.08em] text-pink-400">404</p>
+
+    <h1 class="mt-6 text-5xl font-black tracking-[-0.05em]">
+      Página não encontrada
+    </h1>
+
+    <p class="mt-5 text-lg leading-8 text-slate-300">
+      O endereço acessado não existe no projeto TicketNow.
+    </p>
+
+    <a class="btn-primary mt-8 inline-flex" href="/"> Voltar para o início </a>
+  </div>
 </section>
 
 <%- include('partials/footer') %>

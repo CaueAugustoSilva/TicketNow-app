@@ -1,24 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= titulo %></title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-  <header class="topo">
-    <nav class="navbar" aria-label="Menu principal">
-      <a class="logo" href="/">Ticket<span>Now</span></a>
-      <button class="menu-botao" id="menuBotao" type="button" aria-label="Abrir menu">☰</button>
-      <ul class="menu" id="menu">
-        <li><a class="<%= paginaAtual === 'index' ? 'ativo' : '' %>" href="/">Início</a></li>
-        <li><a class="<%= paginaAtual === 'eventos' ? 'ativo' : '' %>" href="/eventos">Eventos</a></li>
-        <li><a class="<%= paginaAtual === 'ingressos' ? 'ativo' : '' %>" href="/ingressos">Ingressos</a></li>
-        <li><a class="<%= paginaAtual === 'admin' ? 'ativo' : '' %>" href="/admin">Admin</a></li>
-        <li><a class="<%= paginaAtual === 'sobre' ? 'ativo' : '' %>" href="/sobre">Sobre</a></li>
-        <li><a class="<%= paginaAtual === 'contato' ? 'ativo' : '' %>" href="/contato">Contato</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= titulo %></title>
+
+    <!-- Tailwind via CDN: não precisa instalar nada pelo npm -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CSS externo obrigatório do trabalho -->
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-900 antialiased">
+    <div class="page-orb page-orb-one"></div>
+    <div class="page-orb page-orb-two"></div>
+
+    <header
+      class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/90 shadow-2xl shadow-slate-950/30 backdrop-blur-xl"
+    >
+      <nav
+        class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8"
+      >
+        <a href="/" class="flex items-center gap-3 text-white">
+          <span
+            class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-violet-600 text-xl font-black shadow-lg shadow-pink-500/30"
+          >
+            T
+          </span>
+
+          <span class="text-2xl font-black tracking-tight">
+            Ticket<span class="text-pink-400">Now</span>
+          </span>
+        </a>
+
+        <button
+          id="menuBotao"
+          type="button"
+          class="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-2xl text-white transition hover:bg-white/20 lg:hidden"
+        >
+          ☰
+        </button>
+
+        <ul
+          id="menu"
+          class="menu absolute left-5 right-5 top-20 hidden flex-col gap-2 rounded-3xl border border-white/10 bg-slate-900/95 p-4 shadow-2xl backdrop-blur-xl lg:static lg:flex lg:flex-row lg:items-center lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+        >
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'index' ? 'nav-link-active' : '' %>"
+              href="/"
+              >Início</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'eventos' ? 'nav-link-active' : '' %>"
+              href="/eventos"
+              >Eventos</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'ingressos' ? 'nav-link-active' : '' %>"
+              href="/ingressos"
+              >Ingressos</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'admin' ? 'nav-link-active' : '' %>"
+              href="/admin"
+              >Admin</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'sobre' ? 'nav-link-active' : '' %>"
+              href="/sobre"
+              >Sobre</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link <%= paginaAtual === 'contato' ? 'nav-link-active' : '' %>"
+              href="/contato"
+              >Contato</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="overflow-hidden"></main>
+  </body>
+</html>

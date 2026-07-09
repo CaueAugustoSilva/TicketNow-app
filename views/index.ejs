@@ -1,61 +1,151 @@
 <%- include('partials/header') %>
 
-<section class="hero">
-  <div class="hero-conteudo">
-    <p class="etiqueta">Ingressos online</p>
-    <h1><%= subtitulo %></h1>
-    <p>Compre ingressos de forma simples, veja setores, acompanhe o carrinho e gerencie eventos no painel administrativo.</p>
-    <div class="hero-acoes">
-      <a class="botao botao-principal" href="/eventos">Ver eventos</a>
-      <a class="botao botao-secundario" href="/admin">Gerenciar eventos</a>
+<section class="relative bg-slate-950 text-white">
+  <div class="absolute inset-0 bg-[linear-gradient(120deg,rgba(236,72,153,.18),transparent_35%),radial-gradient(circle_at_80%_20%,rgba(124,58,237,.28),transparent_35%)]"></div>
+
+  <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.08fr_.92fr] lg:px-8 lg:py-28">
+    <div>
+      <p class="section-kicker border-pink-400/30 bg-pink-400/10 text-pink-200">
+        Ingressos online
+      </p>
+
+      <h1 class="mt-6 max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.06em] sm:text-6xl lg:text-7xl">
+        <%= subtitulo %>
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+        Compre ingressos de forma simples, compare setores, simule valores e gerencie eventos em uma experiência moderna inspirada no TicketMaster.
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-4">
+        <a class="btn-primary" href="/eventos">Ver eventos</a>
+        <a class="btn-ghost" href="/admin">Gerenciar eventos</a>
+      </div>
+
+      <div class="mt-10 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="mini-card-dark">
+          <strong>6</strong>
+          <span>páginas</span>
+        </div>
+
+        <div class="mini-card-dark">
+          <strong>CRUD</strong>
+          <span>localStorage</span>
+        </div>
+
+        <div class="mini-card-dark">
+          <strong>EJS</strong>
+          <span>templates</span>
+        </div>
+
+        <div class="mini-card-dark">
+          <strong>TW</strong>
+          <span>Tailwind</span>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="hero-card">
-    <img src="/img/banner-ticket.svg" alt="Ilustração de ingresso digital">
+
+    <div class="relative">
+      <div class="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-pink-500/30 to-violet-600/30 blur-3xl"></div>
+
+      <div class="animate-float relative rounded-[2rem] border border-white/10 bg-white/10 p-5 shadow-2xl shadow-fuchsia-950/30 backdrop-blur-xl">
+        <img class="rounded-[1.5rem] bg-white/10" src="/img/banner-ticket.svg" alt="Ilustração de compra de ingressos">
+
+        <div class="mt-5 rounded-[1.5rem] bg-white p-5 text-slate-950 shadow-xl">
+          <p class="text-sm font-black uppercase tracking-[0.2em] text-pink-500">Evento em destaque</p>
+
+          <h2 class="mt-2 text-2xl font-black">
+            Festival Aurora 2026
+          </h2>
+
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Música, tecnologia, experiência premium e compra de ingressos simulada em poucos cliques.
+          </p>
+
+          <div class="mt-4 flex items-center justify-between rounded-2xl bg-slate-100 p-4">
+            <span class="font-bold">A partir de</span>
+            <strong class="text-2xl text-pink-600">R$ 180</strong>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="secao">
-  <div class="secao-titulo">
-    <p class="etiqueta">Destaques</p>
-    <h2>Eventos mais procurados</h2>
-  </div>
+<section class="section-shell">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <div>
+        <p class="section-kicker bg-pink-100 text-pink-600">Eventos</p>
+        <h2 class="section-title">Experiências em destaque</h2>
+      </div>
 
-  <% if (eventosDestaque.length > 0) { %>
-    <div class="grid-cards">
-      <% eventosDestaque.forEach(evento => { %>
-        <article class="card-evento">
-          <img src="<%= evento.imagem %>" alt="Imagem do evento <%= evento.nome %>">
-          <div class="card-corpo">
+      <a class="link-arrow" href="/eventos">Ver todos os eventos</a>
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <% eventosDestaque.forEach((evento) => { %>
+        <article class="event-card">
+          <div class="relative overflow-hidden rounded-[1.5rem] bg-slate-100">
+            <img class="h-48 w-full object-cover transition duration-500 hover:scale-105" src="<%= evento.imagem %>" alt="Imagem do evento <%= evento.nome %>">
+
             <% if (evento.destaque) { %>
-              <span class="selo">Em alta</span>
+              <span class="absolute left-4 top-4 rounded-full bg-pink-600 px-3 py-1 text-xs font-black uppercase text-white shadow-lg">
+                Destaque
+              </span>
             <% } else { %>
-              <span class="selo selo-neutro">Novo</span>
+              <span class="absolute left-4 top-4 rounded-full bg-slate-950 px-3 py-1 text-xs font-black uppercase text-white shadow-lg">
+                Novo
+              </span>
             <% } %>
-            <h3><%= evento.nome %></h3>
-            <p><%= evento.categoria %> • <%= evento.cidade %></p>
-            <p class="preco">A partir de R$ <%= evento.preco.toFixed(2).replace('.', ',') %></p>
-            <a class="link-card" href="/ingressos">Comprar ingresso</a>
+          </div>
+
+          <div class="p-5">
+            <p class="text-sm font-black uppercase tracking-wide text-pink-500">
+              <%= evento.categoria %>
+            </p>
+
+            <h3 class="mt-2 text-xl font-black text-slate-950">
+              <%= evento.nome %>
+            </h3>
+
+            <p class="mt-3 text-sm text-slate-500">
+              <%= evento.cidade %> • <%= evento.data %>
+            </p>
+
+            <div class="mt-5 flex items-center justify-between">
+              <strong class="text-lg text-slate-950">
+                R$ <%= evento.preco %>,00
+              </strong>
+
+              <a href="/ingressos" class="small-action">Comprar</a>
+            </div>
           </div>
         </article>
       <% }) %>
     </div>
-  <% } else { %>
-    <p class="mensagem-vazia">Nenhum evento cadastrado no momento.</p>
-  <% } %>
+  </div>
 </section>
 
-<section class="secao secao-dupla">
-  <div>
-    <p class="etiqueta">Como funciona</p>
-    <h2>Uma plataforma simples para venda de ingressos</h2>
-    <p>O site simula um sistema de venda de ingressos. O visitante visualiza eventos, escolhe setores, consulta valores e envia uma solicitação de contato.</p>
-  </div>
-  <div class="lista-beneficios">
-    <div><strong>1.</strong> Escolha o evento</div>
-    <div><strong>2.</strong> Compare setores</div>
-    <div><strong>3.</strong> Adicione ao carrinho</div>
-    <div><strong>4.</strong> Finalize a compra simulada</div>
+<section class="bg-slate-950 px-5 py-16 text-white lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+    <div class="card-glass">
+      <span class="text-4xl">🔎</span>
+      <h3 class="mt-5 text-2xl font-black">Encontre eventos</h3>
+      <p class="mt-3 text-slate-300">Veja shows, festivais, stand-up e experiências por categoria.</p>
+    </div>
+
+    <div class="card-glass">
+      <span class="text-4xl">🧮</span>
+      <h3 class="mt-5 text-2xl font-black">Calcule ingressos</h3>
+      <p class="mt-3 text-slate-300">Simule quantidade, setor, taxa e valor total da compra.</p>
+    </div>
+
+    <div class="card-glass">
+      <span class="text-4xl">💾</span>
+      <h3 class="mt-5 text-2xl font-black">Gerencie dados</h3>
+      <p class="mt-3 text-slate-300">Cadastre, edite, remova e filtre eventos usando localStorage.</p>
+    </div>
   </div>
 </section>
 
